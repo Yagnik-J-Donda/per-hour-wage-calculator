@@ -15,6 +15,16 @@
 
     <div id="result"></div>
 
+    <div id="summaryPaper" class="paper-view" style="display: none;">
+        <h2>Wage Overview (with Tax)</h2>
+        <p><strong>Gross Yearly Salary:</strong> $<span id="grossSalary"></span></p>
+        <p><strong>Estimated Tax (25%):</strong> $<span id="estimatedTax"></span></p>
+        <p><strong>Net Yearly Salary:</strong> $<span id="netSalary"></span></p>
+        <p><strong>Estimated Hourly Wage (After Tax):</strong> $<span id="netHourly"></span></p>
+    </div>
+
+    <button onclick="window.print()">🖨️ Print Wage Summary</button>
+
     <h2>Saved Calculations</h2>
     <ul id="historyList"></ul>
     <button onclick="clearHistory()">Clear History</button>

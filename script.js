@@ -8,7 +8,20 @@ function calculateWage() {
     return;
   }
 
-  const hourlyWage = salary / (hours * weeks);
+    const hourlyWage = salary / (hours * weeks);
+    const taxRate = 0.25; // 25% tax estimate
+    const estimatedTax = salary * taxRate;
+    const netSalary = salary - estimatedTax;
+    const netHourly = netSalary / (hours * weeks);
+
+    // Update result section
+    document.getElementById('grossSalary').textContent = salary.toFixed(2);
+    document.getElementById('estimatedTax').textContent = estimatedTax.toFixed(2);
+    document.getElementById('netSalary').textContent = netSalary.toFixed(2);
+    document.getElementById('netHourly').textContent = netHourly.toFixed(2);
+
+    document.getElementById('summaryPaper').style.display = 'block';
+
   const result = `Estimated Hourly Wage: $${hourlyWage.toFixed(2)}`;
   document.getElementById('result').textContent = result;
 
