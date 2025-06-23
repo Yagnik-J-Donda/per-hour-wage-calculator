@@ -1,33 +1,56 @@
-function calculateWage() {
-  const salary = parseFloat(document.getElementById('yearlySalary').value);
+function calculate() {
+  const mode = document.querySelector('input[name="mode"]:checked').value;
+  const salaryInput = parseFloat(document.getElementById('salaryInput').value);
   const hours = parseFloat(document.getElementById('hoursPerWeek').value);
   const weeks = parseFloat(document.getElementById('weeksPerYear').value);
 
-  if (isNaN(salary) || isNaN(hours) || isNaN(weeks) || hours === 0 || weeks === 0) {
+  if (isNaN(salaryInput) || isNaN(hours) || isNaN(weeks) || hours === 0 || weeks === 0) {
     alert("Please enter valid numbers");
     return;
   }
 
-    const hourlyWage = salary / (hours * weeks);
-    const taxRate = 0.25; // 25% tax estimate
-    const estimatedTax = salary * taxRate;
-    const netSalary = salary - estimatedTax;
+  let hourlyWage, yearlySalary;
+
+  if (mode === "yearToHour") {
+    yearlySalary = salaryInput;
+    hourlyWage = yearlySalary / (hours * weeks);
+  } else {
+    hourlyWage = salaryInput;
+    yearlySalary = hourlyWage * hours * weeks;
+  }
+
+  const resultText = mode === "yearToHour"
+    ? `Estimated Hourly Wage: $${hourlyWage.toFixed(2)}`
+    : `Estimated Yearly Salary: $${yearlySalary.toFixed(2)}`;
+
+  document.getElementById('result').textContent = resultText;
+
+  // Tax Overview (only for Yearly → Hourly)
+  if (mode === "yearToHour") {
+    const taxRate = 0.25;
+    const estimatedTax = yearlySalary * taxRate;
+    const netSalary = yearlySalary - estimatedTax;
     const netHourly = netSalary / (hours * weeks);
 
-    // Update result section
-    document.getElementById('grossSalary').textContent = salary.toFixed(2);
+    document.getElementById('grossSalary').textContent = yearlySalary.toFixed(2);
     document.getElementById('estimatedTax').textContent = estimatedTax.toFixed(2);
     document.getElementById('netSalary').textContent = netSalary.toFixed(2);
     document.getElementById('netHourly').textContent = netHourly.toFixed(2);
 
     document.getElementById('summaryPaper').style.display = 'block';
-
-  const result = `Estimated Hourly Wage: $${hourlyWage.toFixed(2)}`;
-  document.getElementById('result').textContent = result;
+  } else {
+    document.getElementById('summaryPaper').style.display = 'none';
+  }
 
   // Save to localStorage
   const history = JSON.parse(localStorage.getItem("wageHistory")) || [];
-  history.push({ salary, hours, weeks, hourlyWage, date: new Date().toLocaleString() });
+  history.push({
+    salary: yearlySalary,
+    hours,
+    weeks,
+    hourlyWage,
+    date: new Date().toLocaleString()
+  });
   localStorage.setItem("wageHistory", JSON.stringify(history));
 
   displayHistory();
@@ -50,4 +73,17 @@ function clearHistory() {
   displayHistory();
 }
 
-window.onload = displayHistory;
+window.onload = function () {
+  displayHistory();
+
+  // Dynamic label switching for input field
+  document.querySelectorAll('input[name="mode"]').forEach((elem) => {
+    elem.addEventListener("change", () => {
+      const mode = document.querySelector('input[name="mode"]:checked').value;
+      const label = document.getElementById("salaryLabel");
+      label.innerHTML = mode === "yearToHour"
+        ? 'Yearly Salary (in CAD): <input type="number" id="salaryInput">'
+        : 'Hourly Wage (in CAD): <input type="number" id="salaryInput">';
+    });
+  });
+};

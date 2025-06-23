@@ -8,19 +8,31 @@
 <body>
   <div class="container">
     <h1>Hourly Wage Calculator</h1>
-    <label>Yearly Salary (in CAD): <input type="number" id="yearlySalary"></label><br>
+
+    <!-- Mode Toggle -->
+    <h3>Choose Mode:</h3>
+    <label><input type="radio" name="mode" value="yearToHour" checked> Yearly → Hourly</label>
+    <label><input type="radio" name="mode" value="hourToYear"> Hourly → Yearly</label>
+
+    <!-- Dynamic Input Field -->
+    <label id="salaryLabel">Yearly Salary (in CAD):
+      <input type="number" id="salaryInput">
+    </label><br>
+
     <label>Hours per Week: <input type="number" id="hoursPerWeek" value="40"></label><br>
     <label>Weeks per Year: <input type="number" id="weeksPerYear" value="52"></label><br>
-    <button onclick="calculateWage()">Calculate</button>
+
+    <button onclick="calculate()">Calculate</button>
 
     <div id="result"></div>
 
+    <!-- Tax Summary Overview -->
     <div id="summaryPaper" class="paper-view" style="display: none;">
-        <h2>Wage Overview (with Tax)</h2>
-        <p><strong>Gross Yearly Salary:</strong> $<span id="grossSalary"></span></p>
-        <p><strong>Estimated Tax (25%):</strong> $<span id="estimatedTax"></span></p>
-        <p><strong>Net Yearly Salary:</strong> $<span id="netSalary"></span></p>
-        <p><strong>Estimated Hourly Wage (After Tax):</strong> $<span id="netHourly"></span></p>
+      <h2>Wage Overview (with Tax)</h2>
+      <p><strong>Gross Yearly Salary:</strong> $<span id="grossSalary"></span></p>
+      <p><strong>Estimated Tax (25%):</strong> $<span id="estimatedTax"></span></p>
+      <p><strong>Net Yearly Salary:</strong> $<span id="netSalary"></span></p>
+      <p><strong>Estimated Hourly Wage (After Tax):</strong> $<span id="netHourly"></span></p>
     </div>
 
     <button onclick="window.print()">🖨️ Print Wage Summary</button>
